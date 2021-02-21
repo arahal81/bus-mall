@@ -1,0 +1,36 @@
+img{
+    width: 190px;
+    height: 290px;
+    border: solid black 1px;
+   
+   
+}
+#imgDiv{
+ margin-top: -1%;
+}
+#ls{
+    float: left;
+    border: 1px red solid;
+    text-align: left;
+    padding: 5px;
+    width: 30%;
+    margin-right: 20px ;
+}
+#rs{
+    width: 70%;
+    margin-left: 20px;
+
+}
+p{
+    width: 100%;
+}
+input[type=number],input[type=submit],input[type=button] ,button{
+  width: 25%;
+  padding: 7px 10px;
+  margin: 8px 0;
+
+  border: 1px solid rgb(182, 110, 16);
+  border-radius: 4px;
+  box-sizing: border-box;
+  
+}
