@@ -14,14 +14,16 @@ let txt = document.getElementById('attemptsNumper')
 let resultsBtn = document.getElementById('resultsBtn');
 let formattemp = document.getElementById('attform');
 let rl = document.getElementById('rl')
+let namesAll = [];
+let votesAll = [];
+let shownAll = [];
 function ProductsImgs(name, src) {
     this.name = name;
     this.src = src;
     this.shown = 0;
     this.votes = 0;
     ProductsImgs.allProductsImg.push(this);
-
-
+    namesAll.push(this.name);
 }
 
 /*
@@ -95,15 +97,21 @@ function updateAttNum(event) {
 
 
 function renderThreeImages() {
-    leftImageI = generateRandom();
+    let lastImages = [leftImageI, middleImageI, rightImageI]
+    console.log(lastImages);
+    do {
+        leftImageI = generateRandom();
+    } while (lastImages.includes(leftImageI));
+    console.log(leftImageI);
     do {
         middleImageI = generateRandom();
-    } while (leftImageI === middleImageI);
-
+    } while (leftImageI === middleImageI || lastImages.includes(middleImageI));
+    console.log(middleImageI);
     do {
         rightImageI = generateRandom();
-    } while (rightImageI === leftImageI || rightImageI === middleImageI);
-    console.log(leftImageE);
+    } while (rightImageI === leftImageI || rightImageI === middleImageI || lastImages.includes(rightImageI));
+    console.log(rightImageI);
+
     console.log(ProductsImgs.allProductsImg[leftImageI].src);
     leftImageE.src = ProductsImgs.allProductsImg[leftImageI].src;
     middleImageE.src = ProductsImgs.allProductsImg[middleImageI].src;
@@ -143,7 +151,14 @@ function userClick(event) {
     } else {
         imgDiv.removeEventListener('click', userClick);
         console.log(ProductsImgs.allProductsImg);
-        resultsBtn.style.display = 'block'
+        resultsBtn.style.display = 'block';
+
+        for (let i = 0; i < ProductsImgs.allProductsImg.length; i++) {
+            votesAll.push(ProductsImgs.allProductsImg[i].votes);
+
+            shownAll.push(ProductsImgs.allProductsImg[i].shown);
+        }
+        drowChart()
     }
 
 }
@@ -166,9 +181,34 @@ function viewResult() {
 
     resultsBtn.style.display = 'none'
 }
+function drowChart() {
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
 
+        // The data for our dataset
+        data: {
+            labels: namesAll,
+            datasets: [{
+                label: 'Shown',
+                backgroundColor: '#d89216',
+                borderColor: 'rgb(255, 99, 132)',
+                data: shownAll
+            }, {
+                label: 'Votes',
+                backgroundColor: '374045',
+                borderColor: 'rgb(255, 99, 132)',
+                data: votesAll
+            }]
+        },
 
+        // Configuration options go here
+        options: {
 
+        }
+    });
+}
 
 
 
