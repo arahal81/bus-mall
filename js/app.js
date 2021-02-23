@@ -24,6 +24,7 @@ function ProductsImgs(name, src) {
     this.votes = 0;
     ProductsImgs.allProductsImg.push(this);
     namesAll.push(this.name);
+
 }
 
 /*
@@ -55,8 +56,33 @@ new ProductsImgs('unicorn', 'img/unicorn.jpg');
 new ProductsImgs('usb', 'img/usb.gif');
 new ProductsImgs('water-can', 'img/water-can.jpg');
 new ProductsImgs('wine-glass', 'img/wine-glass.jpg');
-console.log(ProductsImgs.allProductsImg);
+//console.log(ProductsImgs.allProductsImg);
 
+
+
+function setLSData() {
+
+    let allProductsLS = JSON.stringify(ProductsImgs.allProductsImg);
+    localStorage.setItem('allProducts', allProductsLS);
+
+    //console.log(allProductsLS);
+
+}
+
+function getLSData() {
+
+    let stringallProductsLS = localStorage.getItem('allProducts');
+    let objectallProductsLS = JSON.parse(stringallProductsLS);
+    //console.log('allProducts ' + objectallProductsLS);
+
+
+    //console.log(nOShownAll);
+
+    if (objectallProductsLS !== null) {
+        ProductsImgs.allProductsImg = objectallProductsLS;
+    }
+}
+getLSData();
 function generateRandom() {
     return Math.floor(Math.random() * ProductsImgs.allProductsImg.length);
 }
@@ -72,13 +98,14 @@ function showForm(event) {
     veiwAttemptForm.style.display = 'none';
     // txtbox.style.visibility;
 
+
 }
 
 submitbtn.addEventListener('click', updateAttNum)
 function updateAttNum(event) {
     event.preventDefault();
 
-    console.log(maxAttempts);
+    //console.log(maxAttempts);
     maxAttempts = txt.value;
     txt.style.display = 'none';
     submitbtn.style.display = 'none';
@@ -98,21 +125,21 @@ function updateAttNum(event) {
 
 function renderThreeImages() {
     let lastImages = [leftImageI, middleImageI, rightImageI]
-    console.log(lastImages);
+    //console.log(lastImages);
     do {
         leftImageI = generateRandom();
     } while (lastImages.includes(leftImageI));
-    console.log(leftImageI);
+    //console.log(leftImageI);
     do {
         middleImageI = generateRandom();
     } while (leftImageI === middleImageI || lastImages.includes(middleImageI));
-    console.log(middleImageI);
+    // console.log(middleImageI);
     do {
         rightImageI = generateRandom();
     } while (rightImageI === leftImageI || rightImageI === middleImageI || lastImages.includes(rightImageI));
-    console.log(rightImageI);
+    //  console.log(rightImageI);
 
-    console.log(ProductsImgs.allProductsImg[leftImageI].src);
+    //console.log(ProductsImgs.allProductsImg[leftImageI].src);
     leftImageE.src = ProductsImgs.allProductsImg[leftImageI].src;
     middleImageE.src = ProductsImgs.allProductsImg[middleImageI].src;
     rightImageE.src = ProductsImgs.allProductsImg[rightImageI].src;
@@ -131,7 +158,7 @@ function userClick(event) {
     // give the user 10 tries to click after that show result
     attemptsCounter++;
 
-    console.log(event.target.id);
+    // console.log(event.target.id);
 
     if (attemptsCounter <= maxAttempts) {
         if (event.target.id === 'leftImage') {
@@ -150,15 +177,19 @@ function userClick(event) {
 
     } else {
         imgDiv.removeEventListener('click', userClick);
-        console.log(ProductsImgs.allProductsImg);
+        //console.log(ProductsImgs.allProductsImg);
         resultsBtn.style.display = 'block';
 
         for (let i = 0; i < ProductsImgs.allProductsImg.length; i++) {
             votesAll.push(ProductsImgs.allProductsImg[i].votes);
 
             shownAll.push(ProductsImgs.allProductsImg[i].shown);
+
         }
-        drowChart()
+
+        drowChart();
+        setLSData();
+
     }
 
 }
@@ -209,17 +240,6 @@ function drowChart() {
         }
     });
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
